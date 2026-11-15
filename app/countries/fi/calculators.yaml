@@ -1,0 +1,60 @@
+net_salary:
+  title: "Finland Net Salary Calculator 2026"
+  description: "Calculate your take-home pay after state tax, municipal tax, TyEL pension, and insurance contributions in Finland."
+  default_amount: 3800
+  period: "month"
+  currency_symbol: "€"
+  options:
+    - name: "municipality"
+      label: "Municipality"
+      type: "select"
+      default: "Helsinki"
+    - name: "is_church_member"
+      label: "Church Tax (Kirkollisvero)"
+      type: "boolean"
+      default: false
+    - name: "age"
+      label: "Age (affects pension tier)"
+      type: "number"
+      default: 30
+
+loan:
+  title: "Finland Consumer & Personal Loan Calculator"
+  description: "Calculate monthly payments, total interest, and complete amortization schedule."
+  default_amount: 15000
+  default_rate: 6.9
+  default_term_years: 5
+  repayment_types: ["annuity", "equal_principal"]
+
+mortgage:
+  title: "Finland Mortgage & Asuntolaina Calculator"
+  description: "Estimate your monthly mortgage payments with 12-month Euribor reference rates and stress-test rate increases."
+  default_property_price: 260000
+  default_down_payment: 40000
+  default_rate: 3.65
+  default_euribor_margin: 0.65
+  default_term_years: 25
+
+savings:
+  title: "Savings & Compound Interest Calculator"
+  description: "See your savings grow over time with compound interest and regular monthly investments."
+  default_initial_deposit: 5000
+  default_monthly_deposit: 300
+  default_annual_rate: 7.0
+  default_years: 15
+
+early_repayment:
+  title: "Mortgage & Loan Early Repayment Calculator"
+  description: "Calculate how much interest you save and how many years you shave off your mortgage with extra payments."
+  default_remaining_balance: 180000
+  default_current_payment: 950
+  default_interest_rate: 3.7
+  default_extra_monthly: 150
+
+affordability:
+  title: "Finland Mortgage Affordability Calculator"
+  description: "Estimate the maximum property price and mortgage you qualify for based on the Finnish Financial Supervisory Authority (Fin-FSA) rules."
+  default_gross_monthly: 4500
+  default_other_loans_monthly: 200
+  default_savings_equity: 35000
+  max_dti_ratio: 0.40

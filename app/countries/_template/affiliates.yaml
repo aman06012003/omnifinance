@@ -1,0 +1,13 @@
+brokers:
+  - id: global-broker
+    name: "Global Broker"
+    url: "https://example.com/broker"
+    rating: 4.5
+    headline: "Global stock and ETF trading"
+    pros: ["Low fees", "Broad market access"]
+    cons: ["Inactivity fee"]
+    featured: true
+    disclosure_required: true
+
+mortgages: []
+loans: []

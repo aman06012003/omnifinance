@@ -1,0 +1,56 @@
+{% if ai_tax_insight %}
+<div class="ai-insight-card" id="groq-ai-tax-section">
+  <div class="ai-header">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span class="ai-badge">⚡ Groq LLaMA 3.1 8B</span>
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--indigo);">Tax Law Intelligence</span>
+    </div>
+    <span style="font-size: 0.8rem; color: var(--text-muted); background: var(--bg-surface); padding: 4px 10px; border-radius: var(--radius-full);">
+      Confidence: {{ (ai_tax_insight.confidence_score * 100) | round(0) }}%
+    </span>
+  </div>
+
+  <h3 class="ai-headline">{{ ai_tax_insight.headline }}</h3>
+  <p class="ai-body">{{ ai_tax_insight.detailed_explanation }}</p>
+
+  <!-- Key Takeaways -->
+  <div style="margin-bottom: 20px;">
+    <h4 style="font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); margin-bottom: 8px;">Key Tax Takeaways</h4>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 6px;">
+      {% for takeaway in ai_tax_insight.key_takeaways %}
+        <li style="font-size: 0.9rem; color: var(--text-secondary); display: flex; align-items: baseline; gap: 8px;">
+          <span style="color: var(--primary); font-weight: bold;">•</span>
+          <span>{{ takeaway }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Deductions & Optimizations -->
+  {% if ai_tax_insight.optimization_tips %}
+    <div>
+      <h4 style="font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); margin-bottom: 8px;">Tax Deductions & Optimizations You Can Claim</h4>
+      <div class="ai-tips-grid">
+        {% for tip in ai_tax_insight.optimization_tips %}
+          <div class="ai-tip-box">
+            <div class="ai-tip-title">{{ tip.title }}</div>
+            <div class="ai-tip-desc" style="margin-bottom: 8px;">{{ tip.description }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">💰 {{ tip.estimated_impact }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Interactive AI Follow-up -->
+  <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.08);">
+    <form action="/{{ country_code }}/{{ lang }}/net_salary/" method="GET" style="display: flex; gap: 10px;">
+      <input type="hidden" name="amount" value="{{ result.gross_monthly }}">
+      <input type="hidden" name="municipality" value="{{ result.municipality }}">
+      <input type="hidden" name="period" value="month">
+      <input type="text" name="ai_query" placeholder="Ask Groq LLaMA 3.1 about tax deductions, remote work, or pension rules..." class="form-input" style="font-size: 0.9rem;" value="{{ user_query or '' }}">
+      <button type="submit" class="btn btn-ai btn-sm" style="white-space: nowrap;">Ask AI</button>
+    </form>
+  </div>
+</div>
+{% endif %}

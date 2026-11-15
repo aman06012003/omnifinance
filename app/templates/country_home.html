@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}{{ current_country_pack.name }} Financial Calculators & Tax Tools 2026 | OmniFinance{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+  <div class="hero-badge">🇫🇮 {{ current_country_pack.name }} · Verified {{ current_country_pack.config.tax_year }} Tax Rules</div>
+  <h1 class="hero-title">
+    {{ current_country_pack.name }} <span class="hero-gradient">Financial Hub</span>
+  </h1>
+  <p class="hero-subtitle">
+    {{ t.get('hero_subtitle') }}
+  </p>
+
+  <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+    <a href="/{{ country_code }}/{{ lang }}/net_salary/" class="btn btn-primary">
+      {{ t.get('net_salary_title') }} →
+    </a>
+    <a href="/{{ country_code }}/{{ lang }}/mortgage/" class="btn btn-secondary">
+      {{ t.get('mortgage_title') }}
+    </a>
+    <a href="/{{ country_code }}/{{ lang }}/compare/brokers/" class="btn btn-ai">
+      {{ t.get('nav_compare') }}
+    </a>
+  </div>
+</section>
+
+<div class="container">
+  <div class="grid-cards">
+    <!-- 1. Net Salary -->
+    <a href="/{{ country_code }}/{{ lang }}/net_salary/" class="card">
+      <div class="card-icon emerald">💼</div>
+      <h3 class="card-title">{{ t.get('net_salary_title') }}</h3>
+      <p class="card-desc">
+        Calculate your monthly take-home salary after state progressive tax, municipal rates, TyEL pension, and unemployment insurance.
+      </p>
+      <span class="btn btn-secondary btn-sm" style="margin-top: auto;">Open Calculator →</span>
+    </a>
+
+    <!-- 2. Mortgage -->
+    <a href="/{{ country_code }}/{{ lang }}/mortgage/" class="card">
+      <div class="card-icon indigo">🏠</div>
+      <h3 class="card-title">{{ t.get('mortgage_title') }}</h3>
+      <p class="card-desc">
+        Estimate monthly loan repayments with 12-month Euribor reference rates and stress-test your finances against +1% and +2% interest spikes.
+      </p>
+      <span class="btn btn-secondary btn-sm" style="margin-top: auto;">Open Calculator →</span>
+    </a>
+
+    <!-- 3. Personal Loan -->
+    <a href="/{{ country_code }}/{{ lang }}/loan/" class="card">
+      <div class="card-icon amber">💳</div>
+      <h3 class="card-title">{{ t.get('loan_title') }}</h3>
+      <p class="card-desc">
+        Annuity and equal principal amortization schedules with total interest and borrowing cost breakdowns.
+      </p>
+      <span class="btn btn-secondary btn-sm" style="margin-top: auto;">Open Calculator →</span>
+    </a>
+
+    <!-- 4. Savings & Compound Interest -->
+    <a href="/{{ country_code }}/{{ lang }}/savings/" class="card">
+      <div class="card-icon cyan">📈</div>
+      <h3 class="card-title">{{ t.get('savings_title') }}</h3>
+      <p class="card-desc">
+        Simulate long-term ETF, stock, or index fund wealth generation with monthly contributions and inflation-adjusted purchasing power.
+      </p>
+      <span class="btn btn-secondary btn-sm" style="margin-top: auto;">Open Calculator →</span>
+    </a>
+
+    <!-- 5. Early Repayment -->
+    <a href="/{{ country_code }}/{{ lang }}/early_repayment/" class="card">
+      <div class="card-icon emerald">⏱️</div>
+      <h3 class="card-title">{{ t.get('early_repayment_title') }}</h3>
+      <p class="card-desc">
+        Discover how an extra €100 or €200 per month shaves years off your mortgage and saves thousands of euros in bank interest.
+      </p>
+      <span class="btn btn-secondary btn-sm" style="margin-top: auto;">Open Calculator →</span>
+    </a>
+
+    <!-- 6. Affordability -->
+    <a href="/{{ country_code }}/{{ lang }}/affordability/" class="card">
+      <div class="card-icon indigo">🛡️</div>
+      <h3 class="card-title">{{ t.get('affordability_title') }}</h3>
+      <p class="card-desc">
+        Calculate your maximum home loan borrowing limit based on the Finnish Fin-FSA regulatory stress tests and debt-to-income caps.
+      </p>
+      <span class="btn btn-secondary btn-sm" style="margin-top: auto;">Open Calculator →</span>
+    </a>
+  </div>
+</div>
+{% endblock %}

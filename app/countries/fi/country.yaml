@@ -1,0 +1,23 @@
+code: fi
+name: Finland
+default_language: en
+languages: [en, fi, sv]
+currency: EUR
+currency_symbol: "€"
+number_format:
+  decimal: ","
+  thousands: " "
+date_format: "%d.%m.%Y"
+domain_path: /fi
+enabled_calculators:
+  - net_salary
+  - loan
+  - mortgage
+  - savings
+  - early_repayment
+  - affordability
+adsense_enabled: true
+tax_year: 2026
+tax_source_urls:
+  - "https://www.vero.fi"
+  - "https://www.etk.fi"

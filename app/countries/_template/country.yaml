@@ -1,0 +1,22 @@
+code: xx
+name: Template Country
+default_language: en
+languages: [en]
+currency: EUR
+currency_symbol: "€"
+number_format:
+  decimal: "."
+  thousands: ","
+date_format: "%Y-%m-%d"
+domain_path: /xx
+enabled_calculators:
+  - net_salary
+  - loan
+  - mortgage
+  - savings
+  - early_repayment
+  - affordability
+adsense_enabled: true
+tax_year: 2026
+tax_source_urls:
+  - "https://example.com/tax"

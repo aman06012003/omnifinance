@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+
+{% block title %}{{ calc_meta.title }} · OmniFinance{% endblock %}
+{% block meta_description %}{{ calc_meta.description }}{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 36px; padding-bottom: 60px;">
+  <!-- Breadcrumbs & Header -->
+  <div style="margin-bottom: 24px;">
+    <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">
+      <a href="/{{ country_code }}/{{ lang }}/">Home</a> &gt;
+      <a href="/{{ country_code }}/{{ lang }}/">{{ current_country_pack.name }}</a> &gt;
+      <span style="color: var(--text-secondary);">{{ calc_meta.title }}</span>
+    </div>
+    <h1 style="font-size: 2.2rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 8px;">
+      {{ calc_meta.title }}
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem; max-width: 780px;">
+      {{ calc_meta.description }}
+    </p>
+  </div>
+
+  <div class="calculator-layout">
+    <!-- LEFT COLUMN: Form Inputs -->
+    <div class="calc-form-card">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+        <span>⚙️</span> Input Parameters
+      </h2>
+
+      <form action="/{{ country_code }}/{{ lang }}/{{ calc_id }}/" method="GET">
+        {% if calc_id == "net_salary" %}
+          <div class="form-group">
+            <label class="form-label" for="amount">Gross Monthly Salary ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="50" min="500" max="100000" id="amount" name="amount" value="{{ inputs.amount | default(3800) }}" class="form-input" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="period">Calculation Period</label>
+            <select id="period" name="period" class="form-select">
+              <option value="month" {% if inputs.period == 'month' or not inputs.period %}selected{% endif %}>Per Month</option>
+              <option value="year" {% if inputs.period == 'year' %}selected{% endif %}>Per Year</option>
+            </select>
+          </div>
+
+          {% if municipalities %}
+            <div class="form-group">
+              <label class="form-label" for="municipality">Municipality (Kunta)</label>
+              <select id="municipality" name="municipality" class="form-select">
+                {% for m in municipalities %}
+                  <option value="{{ m.name }}" {% if (inputs.municipality | default('Helsinki')) == m.name %}selected{% endif %}>
+                    {{ m.name }} ({{ m.tax_rate_percent }}%)
+                  </option>
+                {% endfor %}
+              </select>
+            </div>
+          {% endif %}
+
+          <div class="form-group">
+            <label class="form-checkbox-label">
+              <input type="checkbox" name="is_church_member" value="true" {% if inputs.is_church_member in ['true', 'on', '1', True] %}checked{% endif %}>
+              <span>Evangelical Lutheran / Orthodox Church member (Kirkollisvero ~1%)</span>
+            </label>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="age">Age</label>
+            <input type="number" min="18" max="75" id="age" name="age" value="{{ inputs.age | default(30) }}" class="form-input">
+          </div>
+
+        {% elif calc_id == "loan" %}
+          <div class="form-group">
+            <label class="form-label" for="amount">Loan Principal ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="500" min="1000" max="200000" id="amount" name="amount" value="{{ inputs.amount | default(15000) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rate">Annual Interest Rate (%)</label>
+            <input type="number" step="0.1" min="0.1" max="25" id="rate" name="rate" value="{{ inputs.rate | default(6.9) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="term_years">Loan Term (Years)</label>
+            <input type="number" min="1" max="30" id="term_years" name="term_years" value="{{ inputs.term_years | default(5) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="repayment_type">Repayment Structure</label>
+            <select id="repayment_type" name="repayment_type" class="form-select">
+              <option value="annuity" {% if inputs.repayment_type != 'equal_principal' %}selected{% endif %}>Annuity (Equal monthly payments)</option>
+              <option value="equal_principal" {% if inputs.repayment_type == 'equal_principal' %}selected{% endif %}>Equal Principal (Decreasing installments)</option>
+            </select>
+          </div>
+
+        {% elif calc_id == "mortgage" %}
+          <div class="form-group">
+            <label class="form-label" for="property_price">Property Purchase Price ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="5000" min="20000" max="2000000" id="property_price" name="property_price" value="{{ inputs.property_price | default(260000) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="down_payment">Down Payment Cash Equity ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="5000" min="0" max="1000000" id="down_payment" name="down_payment" value="{{ inputs.down_payment | default(40000) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rate">Total Rate: Euribor + Bank Margin (%)</label>
+            <input type="number" step="0.05" min="0.1" max="15" id="rate" name="rate" value="{{ inputs.rate | default(3.65) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="term_years">Loan Term (Years)</label>
+            <input type="number" min="5" max="35" id="term_years" name="term_years" value="{{ inputs.term_years | default(25) }}" class="form-input" required>
+          </div>
+
+        {% elif calc_id == "savings" %}
+          <div class="form-group">
+            <label class="form-label" for="initial_deposit">Initial Investment ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="500" min="0" max="1000000" id="initial_deposit" name="initial_deposit" value="{{ inputs.initial_deposit | default(5000) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="monthly_deposit">Monthly Contribution ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="50" min="0" max="50000" id="monthly_deposit" name="monthly_deposit" value="{{ inputs.monthly_deposit | default(300) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="annual_rate">Expected Annual Return (%)</label>
+            <input type="number" step="0.1" min="0.1" max="25" id="annual_rate" name="annual_rate" value="{{ inputs.annual_rate | default(7.0) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="years">Investment Horizon (Years)</label>
+            <input type="number" min="1" max="50" id="years" name="years" value="{{ inputs.years | default(15) }}" class="form-input" required>
+          </div>
+
+        {% elif calc_id == "early_repayment" %}
+          <div class="form-group">
+            <label class="form-label" for="remaining_balance">Remaining Mortgage Balance ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="5000" min="10000" max="1000000" id="remaining_balance" name="remaining_balance" value="{{ inputs.remaining_balance | default(180000) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="current_payment">Current Monthly Installment ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="50" min="100" max="15000" id="current_payment" name="current_payment" value="{{ inputs.current_payment | default(950) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="interest_rate">Current Interest Rate (%)</label>
+            <input type="number" step="0.05" min="0.1" max="15" id="interest_rate" name="interest_rate" value="{{ inputs.interest_rate | default(3.7) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="extra_monthly">Extra Monthly Prepayment ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="25" min="10" max="5000" id="extra_monthly" name="extra_monthly" value="{{ inputs.extra_monthly | default(150) }}" class="form-input" required>
+          </div>
+
+        {% elif calc_id == "affordability" %}
+          <div class="form-group">
+            <label class="form-label" for="gross_monthly">Gross Monthly Household Income ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="100" min="1000" max="50000" id="gross_monthly" name="gross_monthly" value="{{ inputs.gross_monthly | default(4500) }}" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="other_loans_monthly">Existing Monthly Loan Repayments ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="50" min="0" max="10000" id="other_loans_monthly" name="other_loans_monthly" value="{{ inputs.other_loans_monthly | default(200) }}" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="savings_equity">Available Cash Equity ({{ current_country_pack.currency_symbol }})</label>
+            <input type="number" step="1000" min="0" max="1000000" id="savings_equity" name="savings_equity" value="{{ inputs.savings_equity | default(35000) }}" class="form-input">
+          </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          {{ t.get('btn_calculate') }}
+        </button>
+      </form>
+    </div>
+
+    <!-- RIGHT COLUMN: Results & Visualizations -->
+    <div>
+      {% if result %}
+        <!-- Top KPI Cards -->
+        <div class="kpi-row">
+          {% if calc_id == "net_salary" %}
+            <div class="kpi-card">
+              <div class="kpi-title">Monthly Net Take-Home</div>
+              <div class="kpi-value" style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.net_monthly | round(2) }}</div>
+              <div class="kpi-sub">Annual: {{ current_country_pack.currency_symbol }}{{ result.net_annual | round(0) }}</div>
+            </div>
+            <div class="kpi-card indigo">
+              <div class="kpi-title">Effective Tax Rate</div>
+              <div class="kpi-value">{{ result.effective_tax_rate }}%</div>
+              <div class="kpi-sub">Marginal: {{ result.marginal_tax_rate }}%</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-title">Total Monthly Deductions</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.total_deductions_monthly | round(2) }}</div>
+              <div class="kpi-sub">Annual: {{ current_country_pack.currency_symbol }}{{ result.total_deductions_annual | round(0) }}</div>
+            </div>
+
+          {% elif calc_id == "loan" %}
+            <div class="kpi-card">
+              <div class="kpi-title">Monthly Payment</div>
+              <div class="kpi-value" style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.monthly_payment }}</div>
+              <div class="kpi-sub">{{ result.term_years }} yr term</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-title">Total Interest</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.total_interest }}</div>
+              <div class="kpi-sub">Borrowing cost</div>
+            </div>
+            <div class="kpi-card indigo">
+              <div class="kpi-title">Total Repaid</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.total_cost }}</div>
+              <div class="kpi-sub">Principal + interest</div>
+            </div>
+
+          {% elif calc_id == "mortgage" %}
+            <div class="kpi-card">
+              <div class="kpi-title">Monthly Mortgage Payment</div>
+              <div class="kpi-value" style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.monthly_payment }}</div>
+              <div class="kpi-sub">Loan: {{ current_country_pack.currency_symbol }}{{ result.loan_amount }} ({{ result.ltv_percent }}% LTV)</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-title">Total Interest Over Term</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.total_interest }}</div>
+              <div class="kpi-sub">Rate: {{ result.annual_rate_percent }}%</div>
+            </div>
+            <div class="kpi-card indigo">
+              <div class="kpi-title">Total Cost</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.total_cost }}</div>
+              <div class="kpi-sub">Over {{ result.term_years }} years</div>
+            </div>
+
+          {% elif calc_id == "savings" %}
+            <div class="kpi-card">
+              <div class="kpi-title">Future Value</div>
+              <div class="kpi-value" style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.future_value }}</div>
+              <div class="kpi-sub">After {{ result.years }} years</div>
+            </div>
+            <div class="kpi-card indigo">
+              <div class="kpi-title">Total Interest Earned</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.total_interest }}</div>
+              <div class="kpi-sub">Compounding growth</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-title">Real Purchasing Power</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.real_purchasing_power }}</div>
+              <div class="kpi-sub">Adjusted for 2% inflation</div>
+            </div>
+
+          {% elif calc_id == "early_repayment" %}
+            <div class="kpi-card">
+              <div class="kpi-title">Total Interest Saved</div>
+              <div class="kpi-value" style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.interest_saved }}</div>
+              <div class="kpi-sub">Pure cash savings</div>
+            </div>
+            <div class="kpi-card indigo">
+              <div class="kpi-title">Time Shaved Off Loan</div>
+              <div class="kpi-value">{{ result.years_saved }} Years</div>
+              <div class="kpi-sub">{{ result.months_saved }} months earlier</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-title">New Payoff Duration</div>
+              <div class="kpi-value">{{ (result.new_months / 12) | round(1) }} Years</div>
+              <div class="kpi-sub">Down from {{ (result.original_months / 12) | round(1) }} yrs</div>
+            </div>
+
+          {% elif calc_id == "affordability" %}
+            <div class="kpi-card">
+              <div class="kpi-title">Max Property Purchase Price</div>
+              <div class="kpi-value" style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.max_property_purchase_price }}</div>
+              <div class="kpi-sub">Max borrowing + equity</div>
+            </div>
+            <div class="kpi-card indigo">
+              <div class="kpi-title">Max Bank Mortgage Loan</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.max_borrowing_capacity }}</div>
+              <div class="kpi-sub">6% stress rate test</div>
+            </div>
+            <div class="kpi-card amber">
+              <div class="kpi-title">Max Monthly Installment</div>
+              <div class="kpi-value">{{ current_country_pack.currency_symbol }}{{ result.available_mortgage_payment }}</div>
+              <div class="kpi-sub">{{ result.dti_limit_percent }}% DTI ceiling</div>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- SVG Visualizer Chart -->
+        {% if result.svg_chart %}
+          <div class="chart-card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">
+              Visual Distribution
+            </h3>
+            {{ result.svg_chart | safe }}
+          </div>
+        {% endif %}
+
+        <!-- Detailed Breakdown Table (if available) -->
+        {% if calc_id == "net_salary" and result.tax_result.breakdown %}
+          <div class="chart-card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 12px;">Deductions Itemization ({{ result.municipality }})</h3>
+            <div class="data-table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Component</th>
+                    <th>Rate</th>
+                    <th>Monthly</th>
+                    <th>Annual</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in result.tax_result.breakdown %}
+                    <tr>
+                      <td style="font-weight: 600; color: var(--text-primary);">{{ item.name }}</td>
+                      <td>{{ item.rate_percent }}%</td>
+                      <td>{{ current_country_pack.currency_symbol }}{{ item.amount_monthly | round(2) }}</td>
+                      <td>{{ current_country_pack.currency_symbol }}{{ item.amount_annual | round(2) }}</td>
+                    </tr>
+                  {% endfor %}
+                  <tr style="font-weight: 800; background: rgba(255, 255, 255, 0.04);">
+                    <td style="color: var(--primary);">Take-Home Pay (Netto)</td>
+                    <td>-</td>
+                    <td style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.net_monthly | round(2) }}</td>
+                    <td style="color: var(--primary);">{{ current_country_pack.currency_symbol }}{{ result.net_annual | round(2) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Mortgage Stress Test Table -->
+        {% if calc_id == "mortgage" and result.stress_scenarios %}
+          <div class="chart-card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 8px;">Euribor Interest Rate Spike Stress-Test</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">How rising reference rates impact your monthly mortgage budget:</p>
+            <div class="data-table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th>Interest Rate</th>
+                    <th>Monthly Payment</th>
+                    <th>Monthly Difference</th>
+                    <th>Total Extra Interest</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Base Rate</td>
+                    <td>{{ result.annual_rate_percent }}%</td>
+                    <td style="font-weight: 700;">{{ current_country_pack.currency_symbol }}{{ result.monthly_payment }}</td>
+                    <td>-</td>
+                    <td>-</td>
+                  </tr>
+                  {% for sc in result.stress_scenarios %}
+                    <tr>
+                      <td style="color: var(--amber); font-weight: 600;">Rate +{{ loop.index }}.0%</td>
+                      <td>{{ sc.rate_percent }}%</td>
+                      <td style="font-weight: 700;">{{ current_country_pack.currency_symbol }}{{ sc.monthly_payment }}</td>
+                      <td style="color: var(--rose); font-weight: 600;">+{{ current_country_pack.currency_symbol }}{{ sc.difference_monthly }}</td>
+                      <td style="color: var(--rose);">+{{ current_country_pack.currency_symbol }}{{ sc.total_extra_interest }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Assumptions Box -->
+        <div style="background: var(--bg-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px; margin-top: 20px;">
+          <h4 style="font-size: 0.85rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; margin-bottom: 8px;">Calculation Assumptions</h4>
+          <ul style="list-style: none; font-size: 0.85rem; color: var(--text-secondary); display: flex; flex-direction: column; gap: 4px;">
+            {% for k, v in result.assumptions.items() %}
+              <li><strong>{{ k }}:</strong> {{ v }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Groq AI Tax Intelligence Drawer (Included for salary tax calculations) -->
+  {% include "partials/ai_drawer.html" %}
+
+  <!-- Related Comparisons -->
+  <div style="margin-top: 40px;">
+    <h3 style="font-size: 1.4rem; font-weight: 800; margin-bottom: 16px;">Verified Financial Partners in {{ current_country_pack.name }}</h3>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <a href="/{{ country_code }}/{{ lang }}/compare/brokers/" class="btn btn-secondary btn-sm">Compare Brokers (OST & Stocks)</a>
+      <a href="/{{ country_code }}/{{ lang }}/compare/mortgages/" class="btn btn-secondary btn-sm">Compare Mortgage Rates</a>
+      <a href="/{{ country_code }}/{{ lang }}/compare/loans/" class="btn btn-secondary btn-sm">Compare Personal Loans</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

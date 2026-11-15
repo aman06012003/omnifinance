@@ -1,0 +1,55 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo-wrapper" style="margin-bottom: 14px;">
+          <div class="logo-icon">▲</div>
+          <span>Omni<span style="color: var(--primary);">Finance</span></span>
+        </div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; max-width: 320px;">
+          Next-generation multi-country financial calculators with deterministic precision and Groq AI tax intelligence.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">{{ t.get('nav_calculators') }}</h4>
+        <ul class="footer-links">
+          <li><a href="/{{ country_code }}/{{ lang }}/net_salary/">{{ t.get('net_salary_title') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/loan/">{{ t.get('loan_title') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/mortgage/">{{ t.get('mortgage_title') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/savings/">{{ t.get('savings_title') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/early_repayment/">{{ t.get('early_repayment_title') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/affordability/">{{ t.get('affordability_title') }}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">{{ t.get('nav_compare') }}</h4>
+        <ul class="footer-links">
+          <li><a href="/{{ country_code }}/{{ lang }}/compare/brokers/">{{ t.get('compare_brokers') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/compare/mortgages/">{{ t.get('compare_mortgages') }}</a></li>
+          <li><a href="/{{ country_code }}/{{ lang }}/compare/loans/">{{ t.get('compare_loans') }}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-col-title">Newsletter</h4>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+          Receive quarterly tax changes and interest rate alerts.
+        </p>
+        <form action="/newsletter/subscribe" method="POST" style="display: flex; gap: 8px;">
+          <input type="hidden" name="country" value="{{ country_code }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <input type="email" name="email" required placeholder="your.email@domain.com" class="form-input" style="padding: 8px 12px; font-size: 0.85rem;">
+          <button type="submit" class="btn btn-primary btn-sm">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    {% include "partials/disclaimer.html" %}
+
+    <div class="footer-bottom">
+      <p>© 2026 OmniFinance. {{ t.get('footer_rights') }} · <a href="/{{ country_code }}/{{ lang }}/privacy/" style="text-decoration: underline;">Privacy Policy</a> · <a href="/{{ country_code }}/{{ lang }}/terms/" style="text-decoration: underline;">Terms of Use</a></p>
+    </div>
+  </div>
+</footer>

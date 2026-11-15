@@ -1,0 +1,64 @@
+brokers:
+  - id: nordnet-fi
+    name: "Nordnet Finland"
+    url: "https://www.nordnet.fi"
+    headline: "Nordic #1 platform for stocks, ETFs, and Osakesäästötili (OST)"
+    pros:
+      - "Full support for Finnish Osakesäästötili (OST) tax-advantaged accounts"
+      - "Direct Finnish tax reporting to Vero"
+      - "Comprehensive Nordic ETF selection with no monthly fees"
+    cons:
+      - "Standard US brokerage fees slightly higher than international discount brokers"
+    featured: true
+    disclosure_required: true
+
+  - id: degiro-fi
+    name: "DEGIRO"
+    url: "https://www.degiro.fi"
+    headline: "Low-cost European broker for global stocks & index funds"
+    pros:
+      - "Very low commissions across major US & European exchanges"
+      - "Selection of zero-commission core ETFs"
+    cons:
+      - "Manual tax reporting required for Finnish Vero"
+    featured: false
+    disclosure_required: true
+
+mortgages:
+  - id: sortter-mortgage
+    name: "Sortter Asuntolainavertailu"
+    url: "https://www.sortter.fi"
+    headline: "Compare competitive bank mortgage offers across Finland"
+    pros:
+      - "Single application sent to multiple Finnish banks"
+      - "Transparent comparison of bank margins & Euribor rates"
+      - "Free and non-binding"
+    cons:
+      - "Requires Finnish online banking credentials (BankID)"
+    featured: true
+    disclosure_required: true
+
+  - id: nordea-fi
+    name: "Nordea Finland"
+    url: "https://www.nordea.fi"
+    headline: "Leading Nordic bank with flexible mortgage repayment caps"
+    pros:
+      - "Interest rate ceiling (Korkokatto) options"
+      - "Generous loyalty bonuses & digital loan promise"
+    cons:
+      - "Monthly banking package fee applies without premium tier"
+    featured: false
+    disclosure_required: true
+
+loans:
+  - id: zmarta-fi
+    name: "Zmarta Finland"
+    url: "https://www.zmarta.fi"
+    headline: "Compare up to 25 consumer loan and loan refinancing offers"
+    pros:
+      - "Competitive loan margins starting from 4.5%"
+      - "Refinance multiple small loans into one lower monthly payment"
+    cons:
+      - "Credit check required"
+    featured: true
+    disclosure_required: true

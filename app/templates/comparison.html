@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Compare Financial Products in {{ current_country_pack.name }} · OmniFinance{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+  <div style="text-align: center; max-width: 760px; margin: 0 auto 36px;">
+    <span class="hero-badge">Verified {{ current_country_pack.config.tax_year }} Financial Comparisons</span>
+    <h1 style="font-size: 2.5rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 12px;">
+      Compare {{ category | capitalize }} in <span class="hero-gradient">{{ current_country_pack.name }}</span>
+    </h1>
+    <p style="color: var(--text-muted); font-size: 1.05rem;">
+      Transparent fee structures, interest rates, and regulatory protections for {{ current_country_pack.name }} residents.
+    </p>
+
+    <!-- Category Tabs -->
+    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 24px;">
+      <a href="/{{ country_code }}/{{ lang }}/compare/brokers/" class="btn {% if category == 'brokers' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Stock & ETF Brokers</a>
+      <a href="/{{ country_code }}/{{ lang }}/compare/mortgages/" class="btn {% if category == 'mortgages' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Bank Mortgages</a>
+      <a href="/{{ country_code }}/{{ lang }}/compare/loans/" class="btn {% if category == 'loans' %}btn-primary{% else %}btn-secondary{% endif %} btn-sm">Personal Loans</a>
+    </div>
+  </div>
+
+
+  <!-- Comparison Cards -->
+  <div>
+    {% if partners %}
+      {% for p in partners %}
+        <div class="comparison-card {% if p.featured %}featured{% endif %}">
+          <!-- Col 1: Identity & Rating -->
+          <div>
+            {% if p.featured %}
+              <span style="font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--primary); background: var(--primary-glow); padding: 2px 8px; border-radius: var(--radius-full); display: inline-block; margin-bottom: 8px;">★ Editor's Pick</span>
+            {% endif %}
+            <h3 class="partner-logo-title">{{ p.name }}</h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 6px;">{{ p.headline }}</p>
+          </div>
+
+          <!-- Col 2: Pros & Highlights -->
+          <div>
+            <ul class="pros-list">
+              {% for pro in p.pros %}
+                <li>{{ pro }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <!-- Col 3: Outbound CTA Button -->
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+            <a href="/go/{{ p.id }}?country={{ country_code }}&category={{ category }}" target="_blank" rel="sponsored nofollow" class="btn btn-primary" style="width: 100%; text-align: center;">
+              Visit Official Site →
+            </a>
+            <span style="font-size: 0.75rem; color: var(--text-muted);">Secure External Link</span>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="card" style="text-align: center; padding: 48px;">
+        <h3 style="font-size: 1.2rem; margin-bottom: 8px;">No partners found for this category yet.</h3>
+        <p style="color: var(--text-muted);">We are actively reviewing vetted financial providers for {{ current_country_pack.name }}.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

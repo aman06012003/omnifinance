@@ -1,0 +1,45 @@
+net_salary:
+  title: "Net Salary Calculator"
+  description: "Calculate your take-home pay after tax and deductions."
+  default_amount: 4000
+  period: "month"
+  currency_symbol: "€"
+
+loan:
+  title: "Personal Loan Calculator"
+  description: "Calculate monthly payments and total interest."
+  default_amount: 10000
+  default_rate: 6.5
+  default_term_years: 5
+
+mortgage:
+  title: "Mortgage Calculator"
+  description: "Calculate monthly mortgage payments."
+  default_property_price: 300000
+  default_down_payment: 60000
+  default_rate: 3.5
+  default_term_years: 25
+
+savings:
+  title: "Savings & Investment Calculator"
+  description: "Calculate interest growth over time."
+  default_initial_deposit: 5000
+  default_monthly_deposit: 250
+  default_annual_rate: 6.0
+  default_years: 10
+
+early_repayment:
+  title: "Early Repayment Calculator"
+  description: "Calculate time and interest saved."
+  default_remaining_balance: 150000
+  default_current_payment: 800
+  default_interest_rate: 3.5
+  default_extra_monthly: 100
+
+affordability:
+  title: "Mortgage Affordability Calculator"
+  description: "Calculate maximum affordable loan."
+  default_gross_monthly: 4000
+  default_other_loans_monthly: 0
+  default_savings_equity: 30000
+  max_dti_ratio: 0.35

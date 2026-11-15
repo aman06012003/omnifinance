@@ -1,0 +1,81 @@
+tax_year: 2026
+verified_date: "2026-01-15"
+source_urls:
+  - "https://www.vero.fi/en/individuals/tax-cards-and-tax-returns/income/earned-income/tax-rates-on-earned-income/"
+  - "https://www.etk.fi/en/finnish-pension-system/pension-security/financing-and-investments/pension-contributions/"
+
+social_security:
+  pension_tyel_standard: 7.15       # Employee TyEL (under 53 or 63+)
+  pension_tyel_senior: 8.65         # Employee TyEL (aged 53-62)
+  unemployment_insurance: 0.79      # Employee unemployment insurance
+  health_insurance: 1.52            # Medical care & daily allowance contribution
+  health_insurance_threshold: 16499 # Threshold for daily allowance component
+
+state_income_tax_brackets:
+  - lower: 0
+    upper: 20500
+    base_tax: 0
+    rate_percent: 0.0
+  - lower: 20500
+    upper: 30500
+    base_tax: 0
+    rate_percent: 12.64
+  - lower: 30500
+    upper: 50400
+    base_tax: 1264.00
+    rate_percent: 19.00
+  - lower: 50400
+    upper: 88200
+    base_tax: 5045.00
+    rate_percent: 30.25
+  - lower: 88200
+    upper: 150000
+    base_tax: 16479.50
+    rate_percent: 34.00
+  - lower: 150000
+    upper: null
+    base_tax: 37491.50
+    rate_percent: 44.00
+
+municipalities:
+  - name: "Helsinki"
+    code: "091"
+    tax_rate_percent: 5.30
+    church_tax_rate_percent: 1.00
+  - name: "Espoo"
+    code: "049"
+    tax_rate_percent: 5.30
+    church_tax_rate_percent: 1.00
+  - name: "Tampere"
+    code: "837"
+    tax_rate_percent: 7.60
+    church_tax_rate_percent: 1.25
+  - name: "Vantaa"
+    code: "092"
+    tax_rate_percent: 6.40
+    church_tax_rate_percent: 1.00
+  - name: "Oulu"
+    code: "564"
+    tax_rate_percent: 7.90
+    church_tax_rate_percent: 1.20
+  - name: "Turku"
+    code: "853"
+    tax_rate_percent: 6.90
+    church_tax_rate_percent: 1.15
+  - name: "Jyväskylä"
+    code: "179"
+    tax_rate_percent: 8.00
+    church_tax_rate_percent: 1.30
+  - name: "Kuopio"
+    code: "297"
+    tax_rate_percent: 7.60
+    church_tax_rate_percent: 1.25
+  - name: "Average (Finland)"
+    code: "AVG"
+    tax_rate_percent: 7.40
+    church_tax_rate_percent: 1.10
+
+deductions:
+  work_income_tax_credit_max: 2140.00
+  work_income_tax_credit_threshold: 22000.00
+  work_income_reduction_rate: 0.05

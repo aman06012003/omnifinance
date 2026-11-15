@@ -1,0 +1,13 @@
+disclaimer:
+  title: "General Financial Disclaimer"
+  text: "All calculations are for illustrative purposes only and do not constitute certified tax or financial advice."
+  jurisdiction: "International"
+
+affiliate_disclosure:
+  title: "Affiliate Disclosure"
+  text: "We may receive compensation when you click on links and sign up for third-party products."
+
+privacy_notice:
+  company_name: "OmniFinance"
+  contact_email: "privacy@omnifinance.io"
+  gdpr_statement: "We do not store or sell your calculation inputs."

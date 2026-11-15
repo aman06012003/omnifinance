@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero-section">
+  <div class="hero-badge">⚡ Powered by Pure Python & Groq LLaMA 3.1</div>
+  <h1 class="hero-title">
+    Financial Clarity Across <span class="hero-gradient">Every Border</span>
+  </h1>
+  <p class="hero-subtitle">
+    Select your jurisdiction to access verified local tax algorithms, mortgage stress tests, and automated fiscal optimization.
+  </p>
+
+  <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+    <a href="/fi/en/" class="btn btn-primary" style="font-size: 1.1rem; padding: 14px 30px;">
+      Launch Finland (Suomi) 🇫🇮
+    </a>
+    <a href="/fi/en/net_salary/" class="btn btn-secondary" style="font-size: 1.1rem; padding: 14px 30px;">
+      Instant Tax Calculator
+    </a>
+  </div>
+</section>
+
+<div class="container">
+  <div style="text-align: center; margin: 40px 0 20px;">
+    <h2 style="font-size: 1.8rem; font-weight: 800;">Available Country Portals</h2>
+    <p style="color: var(--text-muted);">Each country pack operates with verified statutory tax laws and local currencies.</p>
+  </div>
+
+  <div class="grid-cards">
+    {% for pack in all_countries %}
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 class="card-title" style="margin-bottom: 0;">{{ pack.name }}</h3>
+          <span style="font-size: 0.85rem; font-weight: 700; background: var(--primary-glow); color: var(--primary); padding: 4px 10px; border-radius: var(--radius-full);">
+            {{ pack.config.currency }} ({{ pack.config.currency_symbol }})
+          </span>
+        </div>
+        <p class="card-desc">
+          Verified tax year {{ pack.config.tax_year }} with {{ pack.config.enabled_calculators | length }} active financial engines.
+        </p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;">
+          {% for lang in pack.config.languages %}
+            <a href="/{{ pack.code }}/{{ lang }}/" class="btn btn-secondary btn-sm" style="text-transform: uppercase;">
+              {{ lang }}
+            </a>
+          {% endfor %}
+        </div>
+        <a href="/{{ pack.code }}/{{ pack.config.default_language }}/" class="btn btn-primary btn-sm" style="margin-top: auto;">
+          Enter Country Portal →
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

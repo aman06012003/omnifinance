@@ -1,0 +1,8 @@
+<div class="disclaimer-banner" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px 18px; margin: 24px 0; font-size: 0.8rem; color: var(--text-muted); line-height: 1.5;">
+  <strong style="color: var(--text-secondary);">Financial & Legal Disclaimer:</strong>
+  {% if current_country_pack and current_country_pack.legal_info %}
+    {{ current_country_pack.legal_info.get('disclaimer', {}).get('text', 'All calculations and AI insights are for informational purposes only and do not constitute certified tax, legal, or investment advice. Verify all tax rates with your local tax authority.') }}
+  {% else %}
+    All calculations and AI insights are for informational purposes only and do not constitute certified tax, legal, or investment advice. Verify all tax rates with your local tax authority.
+  {% endif %}
+</div>

@@ -1,0 +1,44 @@
+<header class="navbar">
+  <div class="container nav-container">
+    <a href="/{{ country_code }}/{{ lang }}/" class="logo-wrapper">
+      <div class="logo-icon">▲</div>
+      <span>Omni<span style="color: var(--primary);">Finance</span></span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="/{{ country_code }}/{{ lang }}/" class="nav-link {% if active_page == 'home' %}active{% endif %}">{{ t.get('nav_calculators') }}</a></li>
+      <li><a href="/{{ country_code }}/{{ lang }}/net_salary/" class="nav-link {% if active_page == 'net_salary' %}active{% endif %}">{{ t.get('net_salary_title') }}</a></li>
+      <li><a href="/{{ country_code }}/{{ lang }}/mortgage/" class="nav-link {% if active_page == 'mortgage' %}active{% endif %}">{{ t.get('mortgage_title') }}</a></li>
+      <li><a href="/{{ country_code }}/{{ lang }}/compare/brokers/" class="nav-link {% if active_page == 'compare' %}active{% endif %}">{{ t.get('nav_compare') }}</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <!-- Country Switcher -->
+      <select id="country-switcher" class="pill-select" aria-label="Select Country">
+        {% for c in all_countries %}
+          <option value="{{ c.code }}" {% if c.code == country_code %}selected{% endif %}>
+            {{ c.code | upper }} ({{ c.name }})
+          </option>
+        {% endfor %}
+      </select>
+
+      <!-- Language Switcher -->
+      <select id="lang-switcher" class="pill-select" aria-label="Select Language">
+        {% if current_country_pack and current_country_pack.config %}
+          {% for l in current_country_pack.config.languages %}
+            <option value="{{ l }}" {% if l == lang %}selected{% endif %}>
+              {{ l | upper }}
+            </option>
+          {% endfor %}
+        {% else %}
+          <option value="en" selected>EN</option>
+        {% endif %}
+      </select>
+
+      <!-- Theme Switcher -->
+      <button id="theme-toggle-btn" class="theme-btn" aria-label="Toggle Theme">
+        ☀️
+      </button>
+    </div>
+  </div>
+</header>

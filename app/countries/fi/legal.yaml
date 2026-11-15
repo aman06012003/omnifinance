@@ -1,0 +1,14 @@
+disclaimer:
+  title: "General Financial Disclaimer"
+  text: "The financial calculators, tax estimates, and comparison tables provided on this website are for educational and informational purposes only. They do not constitute certified tax, legal, or financial advice. Tax laws, municipal rates, and banking terms change regularly. Always consult Vero (Finnish Tax Administration) or a certified financial advisor before making monetary decisions."
+  jurisdiction: "Finland"
+
+affiliate_disclosure:
+  title: "Advertising & Affiliate Partner Disclosure"
+  text: "OmniFinance is supported by its users. When you click on loan, mortgage, or broker links on this site and open an account or take out a financial product, we may receive compensation from our affiliate partners at no additional cost to you. This compensation does not influence our objective calculations or editorial integrity."
+
+privacy_notice:
+  company_name: "OmniFinance International"
+  contact_email: "privacy@omnifinance.io"
+  dpo_contact: "dpo@omnifinance.io"
+  gdpr_statement: "We respect your privacy. No personal financial data entered into our calculators is stored on our servers or sold to third parties. Calculator computations are performed dynamically and results are stored only within your session or query parameters."
